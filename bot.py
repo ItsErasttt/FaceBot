@@ -39,7 +39,7 @@ audio_stream = None
 audio_interface = None
 
 # --- Фото ---
-def take_snapshot(camera_index=0):
+def take_snapshot(camera_index=CAMERA_INEX):
     cap = cv2.VideoCapture(camera_index)
     if not cap.isOpened():
         print(f"❌ Не удалось открыть камеру {camera_index} для фото.")
