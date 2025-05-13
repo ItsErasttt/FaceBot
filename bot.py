@@ -9,7 +9,7 @@ import logging
 
 # --- Настройки ---
 TOKEN = "Token_from_the_bot"
-CAMERA_INDEX = 0 #Изменить индекс(если камер несколько, 0 - по умолчанию)
+CAMERA_INDEX = 0 # Изменить индекс(если камер несколько, 0 - по умолчанию)
 SNAPSHOTS_FOLDER = "snapshots"
 RECORDINGS_FOLDER = "recordings"
 AUDIO_RECORDS_FOLDER = "audio_records"
@@ -39,11 +39,24 @@ audio_stream = None
 audio_interface = None
 
 # --- Фото ---
-def take_snapshot(camera_index=CAMERA_INEX):
+def take_snapshot(camera_index=CAMERA_INDEX):
     cap = cv2.VideoCapture(camera_index)
     if not cap.isOpened():
         print(f"❌ Не удалось открыть камеру {camera_index} для фото.")
         return None
+
+    # Установка разрешения
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
+    # Проверяем, действительно ли камера поддерживает заданное разрешение
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    if width != 1920 or height != 1080:
+        print(f"⚠️ Камера не поддерживает разрешение 1920x1080. Используется: {width}x{height}")
+    else:
+        print("✅ Разрешение установлено: 1920x1080")
 
     ret, frame = cap.read()
     cap.release()
